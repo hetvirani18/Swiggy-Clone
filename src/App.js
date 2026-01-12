@@ -4,6 +4,7 @@ import Header from "./Components/Header";
 import FoodOptions from "./Components/FoodOptions";
 import GroceryOptions from "./Components/GroceryOptions";
 import DineOption from "./Components/DineOption";
+import Restaurants from "./Components/Restaurants";
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
         <FoodOptions />
         <GroceryOptions />
         <DineOption />
+        <Restaurants />
     </>)
 }
 
