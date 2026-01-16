@@ -1,4 +1,3 @@
-import ratingImg from "url:../Utils/images/rating.png";
 import persontageImg from "url:../Utils/images/persontage.png";
 
 export default function DineOption({Dinedata}) {
@@ -10,7 +9,11 @@ export default function DineOption({Dinedata}) {
                     <div className="absolute flex justify-between overflow-hidden w-full h-10 px-2 top-38 items-center text-white font-bold text-xl bg-linear-to-t from-black">
                         <p className="truncate w-[80%]">{Dinedata?.info?.name}</p>
                         <div className="flex items-center gap-1">
-                            <img className="h-5" src={ratingImg} />
+                            <div className="w-5 h-5 flex items-center justify-center rounded-full bg-[#1BA672]">
+                                <svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2l2.9 6.1 6.7.6-5 4.4 1.5 6.6L12 16.9 5.9 19.7l1.5-6.6-5-4.4 6.7-.6L12 2z" />
+                                </svg>
+                            </div>
                             <p>{Dinedata?.info?.rating?.value}</p>
                         </div>
                     </div>
