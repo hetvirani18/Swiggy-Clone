@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router"
+import MenuCard from "./MenuCard";
 
 export default function RestaurantMenu(){
     let {id} = useParams();
     console.log(id);
 
-    const[RestMenu, setRestMenu] = useState(null);
+    const[RestMenu, setRestMenu] = useState([]);
 
     useEffect(()=>{
     
@@ -16,7 +17,7 @@ export default function RestaurantMenu(){
            const response = await fetch(proxyServer+swiggyAPI);
            const data = await response.json();
            const tempData = data?.data?.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
-           const filterData = tempData.filter((items)=> 'title' in items?.card?.card)
+           const filterData = tempData.filter((items)=> 'title' in items?.card?.card);
            setRestMenu(filterData);
         }
    
@@ -25,6 +26,10 @@ export default function RestaurantMenu(){
 
        console.log(RestMenu);
     return(<>
-    <h1>Hello oirwfsh</h1>
+        <div className="w-[80%] mx-auto">
+            {
+                RestMenu?.map((menuItems)=> <MenuCard key={menuItems?.card?.card?.title} menuItems={menuItems?.card?.card} />)
+            }
+        </div>
     </>)    
 }
