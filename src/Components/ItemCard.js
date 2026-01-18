@@ -1,4 +1,24 @@
+import { addItems, IncrementItem, DecrementItem } from "../Store/CartSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 export default function ItemCard({item}){
+
+    const cartItems = useSelector(state=>state.cartSlice.items);
+    const ele = cartItems.find(ele=>ele.id===item.id);
+    const count = ele?.quantity || 0;
+    const dispatch = useDispatch();
+
+    function handleAddItem(){
+        dispatch(addItems(item));
+    }
+
+    function handleIncrement() {
+        dispatch(IncrementItem(item));
+    }
+
+    function handleDecrement() {
+        dispatch(DecrementItem(item));
+    }
 
     const isVeg = item?.itemAttribute?.vegClassifier === "VEG";
     const isBestseller = item?.ribbon?.text === "Bestseller";
@@ -52,9 +72,15 @@ export default function ItemCard({item}){
 
             <div className="w-39 h-36 relative shrink-0 ml-4">
                 <img className="w-full h-full object-cover rounded-2xl" src={"https://media-assets.swiggy.com/swiggy/image/upload/" + item?.imageId} />
-                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 shadow-lg rounded-lg bg-white w-24">
-                    <button className="w-full text-green-600 font-extrabold py-2 border border-gray-300 rounded-lg hover:bg-gray-50 uppercase text-sm"> ADD </button>
-                </div>
+                {
+                    count==0 ? (<button className="w-24 absolute -bottom-4 left-8 shadow-lg bg-white text-green-600 font-extrabold py-2 border border-gray-300 rounded-lg hover:bg-gray-100 text-sm" onClick={handleAddItem}> ADD </button>)
+                    : (<div className="w-24 absolute -bottom-4 left-8 shadow-lg bg-white flex items-center justify-between text-green-600 font-extrabold py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
+                        <button onClick={handleDecrement} className="text-2xl px-2 leading-none">−</button>
+                        <span>{count}</span>
+                        <button onClick={handleIncrement} className="text-2xl px-2 leading-none">+</button>
+                    </div>)
+                }
+                
             </div>
         </div>
     </>)

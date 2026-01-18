@@ -1,30 +1,29 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router"
+import { useParams, Link } from "react-router"
 import MenuCard from "./MenuCard";
-import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMenu } from "../Store/MenuSlice";
+import Shimmer from "./Shimmer";
 
 export default function RestaurantMenu(){
     let {id} = useParams();
     console.log(id);
 
-    const[RestMenu, setRestMenu] = useState([]);
     const [selected, setSelected] = useState(null);
-
-    useEffect(()=>{
+    const dispatch = useDispatch();
     
-        async function fetchData() {
-           
-           const proxyServer = "https://cors-anywhere.herokuapp.com/"
-           const swiggyAPI = `https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.7040592&lng=77.10249019999999&restaurantId=${id}`;
-           const response = await fetch(proxyServer+swiggyAPI);
-           const data = await response.json();
-           const tempData = data?.data?.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
-           const filterData = tempData.filter((items)=> 'title' in items?.card?.card);
-           setRestMenu(filterData);
+    const menu = useSelector((state) => state.menuSlice.menus[id]);
+    const loading = useSelector((state) => state.menuSlice.loading);
+
+    useEffect(() => {
+        if (!menu) {
+            dispatch(fetchMenu(id));
         }
-   
-        fetchData();
-    },[])
+    }, [id, menu, dispatch]);
+
+    if (!menu && loading) {
+        return <Shimmer />;
+    }
 
     return(<>
         {/* header */}
@@ -72,7 +71,7 @@ export default function RestaurantMenu(){
 
         <div className="w-[80%] mx-auto">
             {
-                RestMenu?.map((menuItems)=> <MenuCard key={menuItems?.card?.card?.title} menuItems={menuItems?.card?.card} foodSelected={selected} />)
+                menu?.map((menuItems)=> <MenuCard key={menuItems?.card?.card?.title} menuItems={menuItems?.card?.card} foodSelected={selected} />)
             }
         </div>
     </>)    

@@ -1,34 +1,28 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate  } from "react-router"
 import ItemCard from "./ItemCard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMenu } from "../Store/MenuSlice";
+
 
 export default function SearchFood(){
     const {id} = useParams();
     const [food, setFood] = useState("");
-    const[RestMenu, setRestMenu] = useState([]);
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+    const menu = useSelector((state) => state.menuSlice.menus[id]);
+
     useEffect(()=>{
-        console.log(food);
-        
-        
-            async function fetchData() {
-               
-               const proxyServer = "https://cors-anywhere.herokuapp.com/"
-               const swiggyAPI = `https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.7040592&lng=77.10249019999999&restaurantId=${id}`;
-               const response = await fetch(proxyServer+swiggyAPI);
-               const data = await response.json();
-               const tempData = data?.data?.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
-               const filterData = tempData.filter((items)=> 'title' in items?.card?.card);
-               setRestMenu(filterData);
-            }
-            fetchData();
-    },[])
+        if (!menu) {
+            dispatch(fetchMenu(id));
+        }
+    }, [id, menu, dispatch]);
     
     const allItems = useMemo(() => {
         const items = [];
         const myset = new Set();
-        RestMenu?.forEach((object) => {
+        menu?.forEach((object) => {
             if ("itemCards" in object?.card?.card ) {
                 object?.card?.card?.itemCards.forEach((item) => {
                     if(myset.has(item?.card?.info?.id) === false)
@@ -50,7 +44,7 @@ export default function SearchFood(){
             }
         });
         return items;
-    }, [RestMenu]);
+    }, [menu]);
 
     // 3. Filter Data
     const filteredItems = allItems.filter((item) => 
