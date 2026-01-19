@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import Restaurants from "./Components/Restaurants";
+import RestaurantPage from "./Components/RestaurantPage";
 import  {BrowserRouter, Routes, Route} from "react-router";
 import Home from "./Components/Homepage";
 import RestaurantMenu from "./Components/RestaurantMenu";
@@ -18,7 +18,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route element={<SecondaryHome />}>
-                        <Route path="/restaurants" element={<Restaurants />} />
+                        <Route path="/restaurants" element={<RestaurantPage />} />
                         <Route path="/city/ahmedabad/:id" element={<RestaurantMenu />} />
                         <Route path="/city/ahmedabad/:id/search" element={<SearchFood />} />
                     </Route>

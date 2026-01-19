@@ -12,14 +12,19 @@ export default function RestaurantMenu(){
     const [selected, setSelected] = useState(null);
     const dispatch = useDispatch();
     
-    const menu = useSelector((state) => state.menuSlice.menus[id]);
-    const loading = useSelector((state) => state.menuSlice.loading);
+    const resturant = useSelector((store)=> store.menuSlice.menus[id]);
+    const name = resturant?.name;
+    const menu = resturant?.data;
+    const loading = useSelector((store)=> store.menuSlice.loading);
+    console.log(name);
+    
+
 
     useEffect(() => {
         if (!menu) {
             dispatch(fetchMenu(id));
         }
-    }, [id, menu, dispatch]);
+    }, [id, dispatch]);
 
     if (!menu && loading) {
         return <Shimmer />;
@@ -27,6 +32,7 @@ export default function RestaurantMenu(){
 
     return(<>
         {/* header */}
+        <h2 className="text-center font-bold text-4xl mt-10">{name}</h2>
         <div className="max-w-200 mx-auto mt-15">
             <div className="flex items-center justify-center gap-2 mb-5">
                 <div className="h-px w-12 bg-gray-300"></div>

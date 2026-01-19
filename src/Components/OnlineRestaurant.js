@@ -6,7 +6,7 @@ import { fetchResturants } from "../Store/ResturantSlice";
 
 // "https://media-assets.swiggy.com/swiggy/image/upload/"
 
-export default function Restaurants(){
+export default function OnlineRestaurant(){
     
     const dispatch = useDispatch();
     const {resturants, loading, error} = useSelector((state)=>state.resturantSlice);
@@ -25,8 +25,8 @@ export default function Restaurants(){
 
     return(<>
         <div className="max-w-[80%] container mx-auto my-20 text-2xl border-b border-gray-300 pb-20">
-            <h2 className="font font-bold mb-5">Top restaurant chains in Ahmedabad</h2>
-            <div className="flex w-full container mx-auto gap-5 overflow-x-auto pb-10">
+            <h2 className="font font-bold mb-5">Restaurants with online food delivery in Ahmedabad</h2>
+            <div className="flex w-full container mx-auto gap-5 flex-wrap">
                 {
                     resturants.map((restaurant)=> <RestCard key={restaurant?.info.id} restaurant={restaurant}/>)
                 }

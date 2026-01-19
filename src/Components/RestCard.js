@@ -3,7 +3,7 @@ import { Link } from "react-router";
 export default function RestCard({restaurant}){
     
     return(<>
-        <Link to={"/city/ahmedabad/"+restaurant?.info.id}>
+        <Link className="shrink-0" to={"/city/ahmedabad/"+restaurant?.info.id}>
             <div className="max-w-70 transform transition duration-200 hover:scale-95">
                 <img className="w-70 h-45 object-cover rounded-xl" src={"https://media-assets.swiggy.com/swiggy/image/upload/"+restaurant.info.cloudinaryImageId} />
                 <div className="w-[95%] mx-auto mt-2">

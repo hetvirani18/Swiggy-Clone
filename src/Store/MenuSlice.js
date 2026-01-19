@@ -7,8 +7,9 @@ const fetchMenu = createAsyncThunk(
 
     if (state.menuSlice.menus[restaurantId]){
         return {
-            restaurantId,
-            data: state.menuSlice.menus[restaurantId],
+          restaurantId,
+          name: state.menuSlice.menus[restaurantId].name,
+          data: state.menuSlice.menus[restaurantId].data 
         };
 
     } 
@@ -20,9 +21,11 @@ const fetchMenu = createAsyncThunk(
     const data = await response.json();
     const tempData = data?.data?.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
     const filtered = tempData.filter((item) => "title" in item?.card?.card);
+    const name = data?.data?.cards[0]?.card?.card?.text;
 
     return {
       restaurantId,
+      name,
       data: filtered,
     };
   }
@@ -38,8 +41,11 @@ const menuSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchMenu.fulfilled, (state, action) => {
-        const { restaurantId, data } = action.payload;
-        state.menus[restaurantId] = data;
+        const { restaurantId, name, data } = action.payload;
+        state.menus[restaurantId] = {
+          name,
+          data
+        }
         state.loading = false;
       })
       .addCase(fetchMenu.rejected, (state, action) => {
